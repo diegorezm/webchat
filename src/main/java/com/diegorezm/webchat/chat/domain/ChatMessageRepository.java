@@ -5,7 +5,7 @@ import com.diegorezm.webchat.chat.data.dto.ChatMessageDTO;
 import java.util.List;
 
 public interface ChatMessageRepository {
-    void save(ChatMessageDTO dto);
+    ChatMessage save(ChatMessageDTO dto);
 
     List<ChatMessage> findAll();
 }
