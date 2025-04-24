@@ -16,7 +16,7 @@ if (!username || username.trim() === "") {
   usernameModal.showModal();
 } else {
   usernamePlaceholder.innerHTML = `- ${username}`;
-  connectToWebsocket()
+  connectToWebsocket();
 }
 
 usernameSubmit.addEventListener("click", () => {
@@ -25,7 +25,7 @@ usernameSubmit.addEventListener("click", () => {
     localStorage.setItem("username", username);
     usernameModal.style.display = "none";
     chatContainer.style.display = "flex";
-     usernamePlaceholder.innerHTML = `- ${username}`;
+    usernamePlaceholder.innerHTML = `- ${username}`;
     connectToWebsocket();
   } else {
     alert("Please enter a valid username.");
@@ -33,34 +33,34 @@ usernameSubmit.addEventListener("click", () => {
 });
 
 sendButton.addEventListener("click", () => {
-    const message = messageInput.value.trim();
-    if (message !== "") {
-        const chatMessageDTO = {
-            author: username,
-            content: message,
-        };
-        ws.send(JSON.stringify(chatMessageDTO));
-        messageInput.value = "";
-        charCount.textContent = "0/256";
-    }
+  const message = messageInput.value.trim();
+  if (message !== "") {
+    const chatMessageDTO = {
+      author: username,
+      content: message,
+    };
+    ws.send(JSON.stringify(chatMessageDTO));
+    messageInput.value = "";
+    charCount.textContent = "0/256";
+  }
 });
 
 messageInput.addEventListener("input", () => {
-    const text = messageInput.value;
-    const count = text.length;
-    charCount.textContent = `${count}/256`;
+  const text = messageInput.value;
+  const count = text.length;
+  charCount.textContent = `${count}/256`;
 
-    if (count > 256) {
-        messageInput.value = text.substring(0, 256);
-        charCount.textContent = "256/256";
-    }
+  if (count > 256) {
+    messageInput.value = text.substring(0, 256);
+    charCount.textContent = "256/256";
+  }
 });
 
 messageInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter" && !event.shiftKey) {
-        event.preventDefault();
-        sendButton.click();
-    }
+  if (event.key === "Enter" && !event.shiftKey) {
+    event.preventDefault();
+    sendButton.click();
+  }
 });
 
 function connectToWebsocket() {
@@ -91,17 +91,17 @@ function connectToWebsocket() {
 }
 
 function displayMessage(message) {
-    const messageDiv = document.createElement("div");
-    messageDiv.classList.add("chat-message", "rounded-lg", "p-3", "max-w-[70%]");
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("chat-message", "rounded-lg", "p-3", "max-w-[70%]", "h-fit", "overflow-x-auto");
 
-    if (message.author === username) {
-        messageDiv.classList.add("self-end", "bg-blue-500", "text-white");
-        messageDiv.textContent = `You: ${message.content}`;
-    } else {
-        messageDiv.classList.add("bg-gray-700", "text-gray-200");
-        messageDiv.textContent = `${message.author}: ${message.content}`;
-    }
+  if (message.author === username) {
+    messageDiv.classList.add("self-end", "bg-blue-500", "text-white");
+    messageDiv.textContent = `${message.content}`;
+  } else {
+    messageDiv.classList.add("bg-gray-700", "text-gray-200", "self-start");
+    messageDiv.textContent = `${message.author}: ${message.content}`;
+  }
 
-    messageContainerElement.appendChild(messageDiv);
-    messageContainerElement.scrollTop = messageContainerElement.scrollHeight;
+  messageContainerElement.appendChild(messageDiv);
+  messageContainerElement.scrollTop = messageContainerElement.scrollHeight;
 }
