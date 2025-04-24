@@ -7,18 +7,20 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class InMemoryChatMessageRepository implements ChatMessageRepository {
-    private List<ChatMessage> messages;
+    private final List<ChatMessage> messages = new ArrayList<>();
 
     @Override
-    public void save(ChatMessageDTO dto) {
+    public ChatMessage save(ChatMessageDTO dto) {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         String timestamp = LocalDateTime.now().format(formatter);
         var message = new ChatMessage(dto.author(), dto.content(), timestamp);
         messages.add(message);
+        return message;
     }
 
     @Override
